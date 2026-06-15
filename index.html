@@ -1,0 +1,526 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahasra | Creative Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        darker: '#000000',
+                        card: '#111111',
+                        accent: {
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            glow: 'rgba(99, 102, 241, 0.5)'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Animations */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #a855f7, #ec4899, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Outline Text */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Card Hover Effects */
+        .service-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent-500 selection:text-white">
+
+    <!-- Noise Overlay -->
+    <div class="bg-noise"></div>
+
+    <!-- Background Blobs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-dark/70 backdrop-blur-md border-b border-white/5"></div>
+        <div class="max-w-7xl mx-auto px-6 py-4 relative flex justify-between items-center">
+            <a href="#" class="font-heading font-black text-2xl tracking-tighter text-white">
+                SAHASRA<span class="text-accent-500">.</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">About</a>
+                <a href="#services" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Services</a>
+                <a href="#work" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Work</a>
+                <a href="#contact" class="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-gray-200 transition-colors">Let's Talk</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="md:hidden hidden absolute top-full left-0 w-full bg-card border-b border-white/10" id="mobile-menu">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#about" class="text-gray-300 hover:text-white mobile-link">About</a>
+                <a href="#services" class="text-gray-300 hover:text-white mobile-link">Services</a>
+                <a href="#work" class="text-gray-300 hover:text-white mobile-link">Work</a>
+                <a href="#contact" class="text-accent-500 font-medium mobile-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="max-w-5xl mx-auto text-center z-10">
+            <p class="reveal text-accent-500 font-medium tracking-widest uppercase text-sm mb-4">Portfolio of</p>
+            <h1 class="reveal delay-100 font-heading font-black text-7xl md:text-9xl tracking-tighter leading-none mb-6">
+                SAHASRA
+            </h1>
+            <h2 class="reveal delay-200 text-2xl md:text-4xl font-heading font-bold text-gray-300 mb-8">
+                Creative Designer & Writer.
+            </h2>
+            <p class="reveal delay-300 text-gray-400 max-w-2xl mx-auto text-lg mb-10 leading-relaxed">
+                Transforming ideas into compelling visuals and engaging narratives. Specializing in Web Design, Graphic Creation, and Content Writing that drives results.
+            </p>
+            <div class="reveal delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#work" class="w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold rounded-full hover:scale-105 transition-transform duration-300">
+                    View My Work
+                </a>
+                <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/20 text-white font-semibold rounded-full hover:bg-white/5 transition-colors duration-300 flex items-center justify-center gap-2">
+                    Contact Me <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <!-- Text Content -->
+                <div class="lg:w-1/2">
+                    <h2 class="reveal font-heading font-black text-4xl md:text-6xl mb-6">Behind the <br><span class="text-gradient">Creativity.</span></h2>
+                    <div class="reveal delay-100 space-y-6 text-gray-400 text-lg leading-relaxed">
+                        <p>
+                            Hello! I'm Sahasra, a multi-disciplinary creative professional with a passion for bridging the gap between aesthetics and communication. 
+                        </p>
+                        <p>
+                            Whether it's designing an intuitive website interface, crafting eye-catching graphics in Canva, or writing blog posts that captivate audiences, I approach every project with a strategic mindset and creative flair.
+                        </p>
+                        <p>
+                            My goal is to help brands and individuals tell their stories effectively across digital mediums. Let's build something remarkable together.
+                        </p>
+                    </div>
+                    
+                    <div class="reveal delay-200 mt-10 grid grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-white font-bold text-2xl mb-1">2+</h4>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider">Years Exp.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-2xl mb-1">50+</h4>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider">Projects</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual/Abstract -->
+                <div class="lg:w-1/2 reveal delay-200 relative w-full aspect-square md:aspect-video lg:aspect-square">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-3xl border border-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden">
+                        <!-- Abstract shapes representing skills -->
+                        <div class="relative w-full h-full">
+                            <div class="absolute top-10 left-10 w-32 h-32 bg-pink-500/30 rounded-full blur-xl"></div>
+                            <div class="absolute bottom-10 right-10 w-40 h-40 bg-blue-500/30 rounded-full blur-xl"></div>
+                            
+                            <!-- Central Icon composition -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transform -rotate-6 hover:rotate-0 transition-transform">
+                                        <i class="fa-solid fa-pen-nib text-2xl text-pink-400"></i>
+                                    </div>
+                                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transform rotate-6 hover:rotate-0 transition-transform mt-4">
+                                        <i class="fa-solid fa-code text-2xl text-blue-400"></i>
+                                    </div>
+                                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transform -rotate-12 hover:rotate-0 transition-transform">
+                                        <i class="fa-solid fa-file-lines text-2xl text-purple-400"></i>
+                                    </div>
+                                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transform rotate-12 hover:rotate-0 transition-transform mt-4">
+                                        <i class="fa-solid fa-palette text-2xl text-indigo-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 bg-darker relative border-y border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="reveal font-heading font-black text-4xl md:text-5xl mb-4">My Expertise</h2>
+                <p class="reveal delay-100 text-gray-400 max-w-2xl mx-auto">Comprehensive solutions for your digital presence, combining visual design with impactful content.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="reveal delay-100 service-card relative bg-card p-8 rounded-2xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-brands fa-figma text-2xl text-indigo-400"></i> <!-- Using figma icon as proxy for design tools -->
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Web Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Crafting modern, responsive, and user-centric website interfaces that elevate your brand and engage visitors.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="reveal delay-200 service-card relative bg-card p-8 rounded-2xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-pink-500/10 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-bezier-curve text-2xl text-pink-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Graphic / Canva</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Creating stunning social media posts, banners, presentations, and marketing materials tailored to your identity.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="reveal delay-300 service-card relative bg-card p-8 rounded-2xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-pen-fancy text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Content Writing</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Developing compelling copy for websites, newsletters, and marketing campaigns that converts readers into clients.</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="reveal delay-400 service-card relative bg-card p-8 rounded-2xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-newspaper text-2xl text-blue-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Blog Posts</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Researching and writing SEO-friendly articles that provide value, establish authority, and drive traffic.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Gallery Section -->
+    <section id="work" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="reveal font-heading font-black text-4xl md:text-5xl mb-4">Selected Work</h2>
+                    <p class="reveal delay-100 text-gray-400">A glimpse into recent projects across design and writing.</p>
+                </div>
+                <div class="reveal delay-200 mt-6 md:mt-0">
+                    <a href="#" class="text-sm font-semibold hover:text-accent-500 transition-colors flex items-center gap-2">
+                        View All Projects <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Item 1 (Web Design) -->
+                <div class="reveal delay-100 group relative overflow-hidden rounded-2xl aspect-[4/3] lg:col-span-2">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Web Design Project" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                        <span class="text-accent-500 text-sm font-bold tracking-wider mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">WEB DESIGN</span>
+                        <h3 class="text-2xl font-heading font-bold text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">Modern E-commerce UI</h3>
+                    </div>
+                </div>
+
+                <!-- Item 2 (Canva Design) -->
+                <div class="reveal delay-200 group relative overflow-hidden rounded-2xl aspect-[4/3]">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Social Media Design" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                        <span class="text-pink-500 text-sm font-bold tracking-wider mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">GRAPHIC DESIGN</span>
+                        <h3 class="text-xl font-heading font-bold text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">Social Media Campaign</h3>
+                    </div>
+                </div>
+
+                <!-- Item 3 (Content Writing) -->
+                <div class="reveal delay-100 group relative overflow-hidden rounded-2xl aspect-[4/3]">
+                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead2708?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Content Writing" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                        <span class="text-purple-500 text-sm font-bold tracking-wider mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">CONTENT WRITING</span>
+                        <h3 class="text-xl font-heading font-bold text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">Brand Storytelling</h3>
+                    </div>
+                </div>
+
+                <!-- Item 4 (Blog Writing) -->
+                <div class="reveal delay-200 group relative overflow-hidden rounded-2xl aspect-[4/3] lg:col-span-2">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Blog Posts" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                        <span class="text-blue-500 text-sm font-bold tracking-wider mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">BLOG POSTS</span>
+                        <h3 class="text-2xl font-heading font-bold text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">Tech Industry Articles</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 bg-darker relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Contact Info -->
+                <div>
+                    <h2 class="reveal font-heading font-black text-5xl md:text-7xl mb-6">Let's <br>Collaborate.</h2>
+                    <p class="reveal delay-100 text-gray-400 text-lg mb-10 max-w-md">
+                        Have a project in mind or need freelance design/writing services? I'd love to hear from you. Drop me a message and let's make it happen.
+                    </p>
+                    
+                    <div class="reveal delay-200 space-y-6">
+                        <div>
+                            <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Email Me At</p>
+                            <a href="mailto:sahasra8557@gmail.com" class="text-2xl md:text-3xl font-heading font-bold hover:text-accent-500 transition-colors break-all">
+                                sahasra8557@gmail.com
+                            </a>
+                        </div>
+                        
+                        <div class="pt-8">
+                            <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Socials</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300" aria-label="LinkedIn">
+                                    <i class="fa-brands fa-linkedin-in text-lg"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300" aria-label="Behance">
+                                    <i class="fa-brands fa-behance text-lg"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300" aria-label="Twitter">
+                                    <i class="fa-brands fa-twitter text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form (UI only) -->
+                <div class="reveal delay-300">
+                    <form class="space-y-6 p-8 bg-card border border-white/5 rounded-3xl" onsubmit="event.preventDefault();">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+                            <input type="text" id="name" class="w-full bg-darker border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all placeholder-gray-600" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full bg-darker border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all placeholder-gray-600" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-gray-400 mb-2">Service Needed</label>
+                            <select id="service" class="w-full bg-darker border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all appearance-none">
+                                <option value="">Select a service</option>
+                                <option value="web">Web Design</option>
+                                <option value="graphic">Graphic / Canva Design</option>
+                                <option value="content">Content Writing</option>
+                                <option value="blog">Blog Post</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full bg-darker border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-500 focus:ring-1 focus:ring-accent-500 transition-all placeholder-gray-600 resize-none" placeholder="Tell me about your project..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 text-center text-gray-500 text-sm">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; <span id="year"></span> Sahasra. All rights reserved.</p>
+            <div class="mt-4 md:mt-0 font-heading tracking-widest text-white/30 text-outline">
+                SAHASRA
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // Set Current Year in Footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const icon = mobileBtn.querySelector('i');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        }
+
+        mobileBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        });
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+```
